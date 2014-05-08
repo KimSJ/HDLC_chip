@@ -10,8 +10,30 @@ architecture behavioural of HDLC_tb is
 
 component HDLC
 port (
-	dOut : out Std_Logic_Vector (7 downto 0);
-	dRdy : out Std_Logic
+	-- microprocessor input
+	D :		inout 	Std_Logic_Vector (7 downto 0);
+	E : 	in	 	Std_Logic;	-- system clock
+	nCS :	in		Std_Logic;
+	RS :	in		Std_Logic_Vector (1 downto 0);
+	RnW :	in		Std_Logic;
+	nRST :	in		Std_Logic;
+	nIRQ :	out		Std_Logic;
+
+	-- clock and data or transmitter and receiver
+	TxC :	in		Std_Logic;
+	RxC :	in		Std_Logic;
+	TxD :	out		Std_Logic;
+	RxD :	in		Std_Logic;
+
+	-- Peripheral/Modem control
+	nRTS :	out		Std_Logic;
+	nCTS :	in		Std_Logic;
+	nDCD :	in		Std_Logic;
+	nLOCnDTR : out	Std_Logic;
+
+	-- DMA interface
+	RDSR :	out		Std_Logic; -- Rx FIFO requests service
+	TDSR :	out		Std_Logic  -- Tx FIFO requests service
 	);
 end component;
 
