@@ -107,11 +107,18 @@ end behavioural;
 library IEEE;
 use IEEE.STD_LOGIC_1164.All;
 use IEEE.NUMERIC_STD.all;
+-- debug libraries
+use std.textio.all;
+use ieee.std_logic_textio.all;
 
 entity HdlcTransmitter is
+	generic (
+		TxReqChainSize  : integer := 2 -- defines length of metastability chain; must be at least two.
+	);
 	port (
 		-- microprocesser interface
 		Din :	in		Std_Logic_Vector (7 downto 0); -- Tx register
+		LastByte : in 	Std_Logic;
 		TxWR : 	in	 	Std_Logic;
 		TxReq : out		Std_Logic; -- high if space in register
 
@@ -124,11 +131,18 @@ entity HdlcTransmitter is
 		TxD :	out		Std_Logic;
 		TxEn :	buffer	Std_Logic
 	);
+-- translate_off
+-- check bounds of generics -- error reported only on execution
+begin
+	assert( TxReqChainSize > 1 )
+	report "TxReqChainSize should be at least 2!"
+	severity ERROR;
+-- translate_on
 end HdlcTransmitter;
 
 architecture behavioural of HdlcTransmitter is
 
-	type txStateType is (Idle, StartFlag, SendData, SendLast, SendCRC1, SendCRC2, FinalFlag, Abort);
+	type txStateType is (Idle, StartFlag, SendData, SendLast, SendCRC1, SendCRC2, FinalFlag);
 	signal txState, txNextState : txStateType;
 
 	signal TxFIFO, TxShiftReg : Std_Logic_Vector (7 downto 0);
@@ -137,8 +151,9 @@ architecture behavioural of HdlcTransmitter is
 
 	signal TxShiftEnable : Std_Logic;
 
-	constant TxReqChainSize  : integer := 2;
-	constant TxReqChainEmpty : Std_Logic_Vector (TxReqChainSize-1 downto 0) := "11";
+	-- calculate an initialisation vector for TxReqChain (all-ones)
+--    constant TxReqChainEmpty : Std_Logic_Vector (TxReqChainSize-1 downto 0) := Std_Logic_Vector(to_signed(-1,TxReqChainSize));
+    signal TxReqChainEmpty : Std_Logic_Vector (TxReqChainSize-1 downto 0) := Std_Logic_Vector(to_signed(-1,TxReqChainSize));
 
 	signal TxRq : Std_Logic_Vector (TxReqChainSize-1 downto 0); 	-- shifted through to minimise metastability;
 													-- 0 means reg is full
@@ -146,34 +161,132 @@ architecture behavioural of HdlcTransmitter is
 	signal crcReg : Std_Logic_Vector (15 downto 0);
 	signal zeroIns : Std_Logic; -- output of state machine indicating that zero insertion after five 1's is active
 
-begin
+	-- handy alias
+	signal DataWaiting : boolean;
 
-	TxReq <= TxRq(TxReqChainSize-1); -- using the top bit means it appears full to processor as soon as reg is written
+	-- translate_off
+	signal stateDecode : integer;
+	signal nextStateDecode : integer;
+	-- translate_on
+
+begin
+	-- translate_off
+	process (txState) begin
+		if txState = Idle then
+			stateDecode <= 0;	
+		elsif txState = StartFlag then
+			stateDecode <= 1;
+		elsif txState = SendData then
+			stateDecode <= 2;
+		elsif txState = SendLast then
+			stateDecode <= 3;
+		elsif txState = SendCRC1 then
+			stateDecode <= 4;
+		elsif txState = SendCRC2 then
+			stateDecode <= 5;
+		elsif txState = FinalFlag then
+			stateDecode <= 6;
+		end if;
+	end process;
+	process (txNextState) begin
+		if txNextState = Idle then
+			nextStateDecode <= 0;	
+		elsif txNextState = StartFlag then
+			nextStateDecode <= 1;
+		elsif txNextState = SendData then
+			nextStateDecode <= 2;
+		elsif txNextState = SendLast then
+			nextStateDecode <= 3;
+		elsif txNextState = SendCRC1 then
+			nextStateDecode <= 4;
+		elsif txNextState = SendCRC2 then
+			nextStateDecode <= 5;
+		elsif txNextState = FinalFlag then
+			nextStateDecode <= 6;
+		end if;
+	end process;
+	-- translate_on
+
+	TxReq <= TxRq(TxReqChainSize-1); -- use top bit so it appears full to processor as soon as reg is written
+	TxD <= TxShiftReg(0);
+	DataWaiting <= TxRq(0) = '0';
 
 	-- latching data into Tx holding reg (FIFO)
 	TxDataReg : process(TxRST, TxWR)
 	begin
 		if TxRST = '1' then
 			TxFIFO <= "00000000";
-			TxRq <= TxReqChainEmpty; -- mark reg empty
 		elsif rising_edge(TxWR) then
 			TxFIFO <= Din;
-			TxRq (TxReqChainSize-1) <= '0'; -- insert "full" signal at top of metastab chain
 		end if;
 	end process TxDataReg;
+
+	pTxRq : process(TxRST, TxWR, TxCLK)
+	begin
+		if TxRST = '1' then
+			TxRq <= TxReqChainEmpty; -- mark reg empty
+		elsif rising_edge(TxWR) then
+			TxRq (TxReqChainSize-1) <= '0'; -- insert "full" signal at top of metastab chain
+		elsif rising_edge(TxCLK) then
+			if TxBitCount = "000" and (TxState = SendData OR TxState = SendLast) then -- loading byte into shift reg
+				TxRq <= TxReqChainEmpty; -- signal that we've taken the data
+			else
+				TxRq(TxReqChainSize-2 downto 0) <= TxRq(TxReqChainSize-1 downto 1); -- shift the "full" signal through metastab chain
+			end if;
+		end if;
+	end process pTxRq;
+
+	-- ******* Main state machine *********
+	-- register
+	process(TxBitCount(2), TxRST)
+	-- clocked on bit count rolling over (8 bits tx'd)
+	begin
+		if TxRST = '1' then
+			TxState <= Idle;
+		elsif falling_edge(TxBitCount(2)) then
+			TxState <= txNextState;
+		end if;
+	end process;
+
+	-- state register inputs
+	process
+		( DataWaiting -- 
+		 )
+	begin
+		case TxState is
+			when Idle =>
+				if DataWaiting then
+					TxNextState <= StartFlag;
+				else
+					TxNextState <= Idle;
+				end if;
+			when StartFlag =>
+				TxNextState <= SendData;
+			when SendData =>
+				if LastByte = '1' then
+					TxNextState <= SendLast;
+				else
+					TxNextState <= SendData;
+				end if;
+			when SendLast =>
+				TxNextState <= SendCRC1;
+			when SendCRC1 =>
+				TxNextState <= SendCRC2;
+			when SendCRC2 =>
+				TxNextState <= FinalFlag;
+			when FinalFlag =>
+				TxNextState <= Idle;
+		end case;
+	end process;
 
 	-- clocking data into shift reg (out of Tx holding reg, CRC, flag or abort)
 	TxDataTx : process(TxRST, TxRq, TxCLK, TxShiftEnable)
 	begin
 		if TxRST = '1' then
 			TxBitCount <= "000";
+			TxOneCount <= "000";
 		elsif rising_edge(TxCLK) then
-			TxRq(TxReqChainSize-2 downto 0) <= TxRq(TxReqChainSize-1 downto 1); -- shift the "full" signal through metastab chain
-			if txState = Abort then
-				TxShiftReg <= "11111111";
-				TxBitCount <= "000";
-				-- TODO: fix this so that we get seven or eight ones
-			elsif TxOneCount = "101" AND ZeroIns = '1' then
+			if TxOneCount = "101" AND ZeroIns = '1' then
 				TxShiftReg(0) <= '0';
 				TxOneCount <= "000";
 				-- note we're not incrementing the bit count whilst we insert the extra zero
@@ -191,14 +304,11 @@ begin
 							else
 								-- load in next byte
 								TxShiftReg <= TxFIFO;
-								TxRq <= TxReqChainEmpty; -- signal that we've taken the data
 							end if;
 						when SendCRC1 => 
 							TxShiftReg <= crcReg (15 downto 8);
 						when SendCRC2 =>
 							TxShiftReg <= crcReg (7 downto 0);
-						when Abort =>
-							null; -- can't get here
 					end case;
 				else -- we need to shift out next bit
 					TxShiftReg (6 downto 0) <= TxShiftReg (7 downto 1);

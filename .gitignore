@@ -1,5 +1,6 @@
 *.o
 *.cf
+*.vcd
 .~lock.*
 HDLC.sublime-project
 HDLC.sublime-workspace
