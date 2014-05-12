@@ -151,13 +151,12 @@ architecture behavioural of HdlcTransmitter is
 
 	signal TxShiftEnable : Std_Logic;
 
-	-- calculate an initialisation vector for TxReqChain (all-ones)
---    constant TxReqChainEmpty : Std_Logic_Vector (TxReqChainSize-1 downto 0) := Std_Logic_Vector(to_signed(-1,TxReqChainSize));
-    signal TxReqChainEmpty : Std_Logic_Vector (TxReqChainSize-1 downto 0) := Std_Logic_Vector(to_signed(-1,TxReqChainSize));
-
 	signal TxRq : Std_Logic_Vector (TxReqChainSize-1 downto 0); 	-- shifted through to minimise metastability;
 													-- 0 means reg is full
 													-- processor watches top bit, HDLC watches bit 0
+	-- calculate an initialisation vector for TxRq chain (all-ones)
+    signal TxReqChainEmpty : Std_Logic_Vector (TxReqChainSize-1 downto 0) := (others => '1');
+
 	signal crcReg : Std_Logic_Vector (15 downto 0);
 	signal zeroIns : Std_Logic; -- output of state machine indicating that zero insertion after five 1's is active
 
@@ -207,19 +206,48 @@ begin
 	end process;
 	-- translate_on
 
-	TxReq <= TxRq(TxReqChainSize-1); -- use top bit so it appears full to processor as soon as reg is written
+	TxReq <= TxRq(TxReqChainSize-1) AND NOT TxRST; -- use top bit so it appears full to processor as soon as reg is written. De-assert when reset
 	TxD <= TxShiftReg(0);
 	DataWaiting <= TxRq(0) = '0';
 
 	-- latching data into Tx holding reg (FIFO)
-	TxDataReg : process(TxRST, TxWR)
+	pTxFIFO : process(TxRST, TxWR)
 	begin
 		if TxRST = '1' then
 			TxFIFO <= "00000000";
 		elsif rising_edge(TxWR) then
 			TxFIFO <= Din;
 		end if;
-	end process TxDataReg;
+	end process pTxFIFO;
+
+	-- TxEn
+	pTxEn : process(TxRST, TxCLK)
+	begin
+		if TxRST = '1' then
+			TxEn <= '0';
+		elsif rising_edge(TxCLK) then
+			if TxState = Idle then 
+				TxEn <= '0';
+			else
+				TxEn <= '1';
+			end if;
+		end if;
+	end process pTxEn;
+
+	-- ZeroIns
+	pZeroIns : process(TxRST, TxCLK)
+	begin
+		if TxRST = '1' then
+			ZeroIns <= '0';
+		elsif rising_edge(TxCLK) then
+			case TxState is
+				when Idle | StartFlag | FinalFlag => ZeroIns <= '0';
+				when others =>ZeroIns <= '1';
+			end case;
+		end if;
+	end process pZeroIns;
+
+
 
 	pTxRq : process(TxRST, TxWR, TxCLK)
 	begin
@@ -250,7 +278,7 @@ begin
 
 	-- state register inputs
 	process
-		( DataWaiting -- 
+		( DataWaiting, TxState -- 
 		 )
 	begin
 		case TxState is
@@ -284,11 +312,9 @@ begin
 	begin
 		if TxRST = '1' then
 			TxBitCount <= "000";
-			TxOneCount <= "000";
 		elsif rising_edge(TxCLK) then
 			if TxOneCount = "101" AND ZeroIns = '1' then
 				TxShiftReg(0) <= '0';
-				TxOneCount <= "000";
 				-- note we're not incrementing the bit count whilst we insert the extra zero
 			else
 				TxBitCount <= Std_Logic_Vector(unsigned(TxBitCount) + 1); -- increment bit count

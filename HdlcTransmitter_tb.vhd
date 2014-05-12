@@ -46,22 +46,36 @@ architecture behavioural of HdlcTransmitter_tb is
 	signal	TxD :	Std_Logic;
 	signal	TxEn :	Std_Logic;
 
+	signal byteCount : integer := 0;
 
 
 begin
 	transmitter : HdlcTransmitter PORT MAP (Din, LastByte, TxWR , TxReq, TxRST, TxCLK, TxD, TxEn);
 
-process
-begin
- 		txCLK <= '0';
- 		wait for 20 us;
- 		txCLK <= '1';
- 		wait for 20 us;
-end process;		
+	process
+	-- drive the txClock
+	begin
+	 		txCLK <= '0';
+	 		wait for 20 us;
+	 		txCLK <= '1';
+	 		wait for 20 us;
+	end process;		
 
 	TxRST <= '0' after 0 us, '1' after 1 us, '0' after 2 us;
-	TxWR <= '0' after 0 us, '1' after 10 us, '0' after 11 us;
-	Din   <= "00001000" after 0 us,   "00000000" after 100 us,  "00001111" after 200 us,  "00001010" after 300 us,  "00000000" after 500 us,  "00000000" after 600 us;
+
+	process (TxReq)
+	-- write another byte
+	begin
+		if rising_edge(TxReq) then
+		byteCount <= byteCount + 1;
+			if byteCount > 5 then
+				LastByte <= '1';
+			end if;
+			Din <= "11111111";
+			TxWR <= '1' after 10 ns, '0' after 100 ns;
+		end if;
+	-- Din   <= "00001000" after 0 us,   "00000000" after 100 us,  "00001111" after 200 us,  "00001010" after 300 us,  "00000000" after 500 us,  "00000000" after 600 us;
+	end process;
 
 
 end behavioural;
