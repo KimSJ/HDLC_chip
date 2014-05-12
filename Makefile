@@ -1,8 +1,15 @@
+# Makefile
+###############################################################
+# General VHDL makefile
+#   edit "all:"" and "current:" targets to suit your project
+###############################################################
+
 # use the library version which includes std_logic_textio:
 GHDL_OPTS = --ieee=synopsys
 
+# see http://home.gna.org/ghdl/ghdl/Simulation-options.html#Simulation-options
+# for details of simulation options, including --stop_time
 STOP_TIME = 10000us
-
 ifdef STOP_TIME
 	R_OPTS += --stop-time=$(STOP_TIME)
 endif
@@ -10,17 +17,16 @@ endif
 
 all: hdlc
 
+# mark the top level as depending on all .o files
+hdlc: *.o hdlc.o
+	ghdl -e $(GHDL_OPTS) hdlc
+
+current: hdlctransmitter_tb
+
 clean:
 	rm *.o *.cf *.vcd
 
-current: hdlctransmitter_tb
-# hdlctransmitter
-	#./hdlctransmitter_tb
-#	ghdl -r  $(GHDL_OPTS) hdlctransmitter_tb --vcd=hdlctransmitter_tb.vcd --stop-time=10000us
-	#gtkwave hdlctransmitter_tb.vcd
-
 %_tb: %_tb.o %.o
-#	ghdl -e $(GHDL_OPTS) $*
 	ghdl -e $(GHDL_OPTS) $@
 	ghdl -r $(GHDL_OPTS) $@ --vcd=$@.vcd $(R_OPTS)
 	# To start a new gtkwave session:
@@ -32,4 +38,6 @@ current: hdlctransmitter_tb
 %.o: %.vhd
 	ghdl -a  $(GHDL_OPTS) $?
 
+# the following rule stops make considering .o files as
+# "intermediate", and thus prevents it deleting them
 .PRECIOUS: %.o

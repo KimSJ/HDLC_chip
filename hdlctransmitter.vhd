@@ -1,7 +1,7 @@
 -- hdlc_transmitter.vhd
 --
 -- takes 8-bit parallel data and sends frame
--- Frame ends when data value is written with "TxLast" set.
+-- Frame ends when data value is written with "txLast" set.
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.All;
@@ -17,24 +17,24 @@ entity HdlcTransmitter is
 	port (
 		-- microprocesser interface
 		Din :	in		Std_Logic_Vector (7 downto 0); -- Tx register
-		TxLast : in 	Std_Logic;
-		TxWR : 	in	 	Std_Logic;
-		TxReq : out		Std_Logic; -- high if space in register
+		txLast : in 	Std_Logic;
+		txWR : 	in	 	Std_Logic;
+		txReq : out		Std_Logic; -- high if space in register
 
-		TxRST :	in		Std_Logic;
+		txRST :	in		Std_Logic;
 
 		-- bit clock
-		TxCLK :	in		Std_Logic;
+		txCLK :	in		Std_Logic;
 
 		-- line interface
-		TxD :	out		Std_Logic;
-		TxEn :	buffer	Std_Logic
+		txD :	buffer	Std_Logic;
+		txEn :	buffer	Std_Logic
 	);
 -- translate_off
 -- check bounds of generics -- error reported only on execution
 begin
-	assert( TxReqChainSize > 1 )
-	report "TxReqChainSize should be at least 2!"
+	assert( txReqChainSize > 1 )
+	report "txReqChainSize should be at least 2!"
 	severity ERROR;
 -- translate_on
 end HdlcTransmitter;
@@ -44,29 +44,39 @@ architecture behavioural of HdlcTransmitter is
 	type txStateType is (Idle, StartFlag, SendData, SendLast, SendCRC1, SendCRC2, FinalFlag);
 	signal txState, txNextState : txStateType;
 
-	signal TxFIFO, TxShiftReg : Std_Logic_Vector (7 downto 0);
-	signal TxBitCount : Std_Logic_Vector (2 downto 0);
-	signal TxOneCount : Std_Logic_Vector (2 downto 0);
+	signal txFIFO, txShiftReg : Std_Logic_Vector (7 downto 0);
+	signal txBitCount : Std_Logic_Vector (2 downto 0);
+	signal txOneCount : Std_Logic_Vector (2 downto 0);
 
-	signal TxShiftEnable : Std_Logic;
+	signal txShiftEnable : Std_Logic;
+	signal txShiftClk, dontSwallow: Std_Logic;
 
-	signal TxRq : Std_Logic_Vector (TxReqChainSize-1 downto 0); 	-- shifted through to minimise metastability;
+	signal txRq : Std_Logic_Vector (txReqChainSize-1 downto 0); 	-- shifted through to minimise metastability;
 													-- 0 means reg is full
 													-- processor watches top bit, HDLC watches bit 0
-	-- calculate an initialisation vector for TxRq chain (all-ones)
-    signal TxReqChainEmpty : Std_Logic_Vector (TxReqChainSize-1 downto 0) := (others => '1');
+	-- calculate an initialisation vector for txRq chain (all-ones)
+    signal txReqChainEmpty : Std_Logic_Vector (txReqChainSize-1 downto 0) := (others => '1');
 
-	signal crcReg : Std_Logic_Vector (15 downto 0);
+	signal crcReg : Std_Logic_Vector (15 downto 0) := x"AAAA";
 	signal zeroIns : Std_Logic; -- output of state machine indicating that zero insertion after five 1's is active
 
 	-- handy alias
 	signal DataWaiting : boolean;
+
+	component crc16 is 
+		port (clk, reset, ce, din: in std_logic; 
+			  crc_sum: out std_logic_vector(15 downto 0)); 
+	end component crc16;
+	signal txCrcEn : Std_Logic;
+	signal crcReset : Std_Logic;
 
 	-- translate_off
 		-- stuff for debugging simulations
 		signal stateDecode : integer;
 		signal nextStateDecode : integer;
 	-- translate_on
+
+
 
 begin
 	-- translate_off
@@ -107,155 +117,244 @@ begin
 		end process;
 	-- translate_on
 
-	TxReq <= TxRq(TxReqChainSize-1) AND NOT TxRST; -- use top bit so it appears full to processor as soon as reg is written. De-assert when reset
-	TxD <= TxShiftReg(0);
-	DataWaiting <= TxRq(0) = '0';
+	txReq <= txRq(txReqChainSize-1) AND NOT txRST; -- use top bit so it appears full to processor as soon as reg is written. De-assert when reset
+	txD <= txShiftReg(0);
+	DataWaiting <= txRq(0) = '0';
 
-	-- latching data into Tx holding reg (FIFO)
-	pTxFIFO : process(TxRST, TxWR)
+	-- pulse dontSwallower: removes a txCLK pulse when zero insertion required
+	txShiftClk <= txClk and dontSwallow;
+	pTxShiftClk : process(txCLK, txOneCount)
 	begin
-		if TxRST = '1' then
-			TxFIFO <= "00000000";
-		elsif rising_edge(TxWR) then
-			TxFIFO <= Din;
+		if falling_edge(txCLK) then
+			if txOneCount="100" and zeroIns = '1' then
+				dontSwallow <= '0';
+			else
+				dontSwallow <= '1';
+			end if;
+		end if;
+	end process pTxShiftClk;
+
+	-- latching data into tx holding reg (FIFO)
+	pTxFIFO : process(txRST, txWR)
+	begin
+		if txRST = '1' then
+			txFIFO <= "00000000";
+		elsif rising_edge(txWR) then
+			txFIFO <= Din;
 		end if;
 	end process pTxFIFO;
 
-	-- TxEn
-	pTxEn : process(TxRST, TxCLK)
+	-- txEn
+	pTxEn : process(txRST, txCLK)
 	begin
-		if TxRST = '1' then
-			TxEn <= '0';
-		elsif rising_edge(TxCLK) then
-			if TxState = Idle then 
-				TxEn <= '0';
+		if txRST = '1' then
+			txEn <= '0';
+		elsif rising_edge(txCLK) then
+			if txState = Idle then 
+				txEn <= '0';
 			else
-				TxEn <= '1';
+				txEn <= '1';
 			end if;
 		end if;
 	end process pTxEn;
 
 	-- ZeroIns
-	pZeroIns : process(TxRST, TxCLK)
+	pZeroIns : process(txRST, txCLK)
 	begin
-		if TxRST = '1' then
-			ZeroIns <= '0';
-		elsif rising_edge(TxCLK) then
-			case TxState is
-				when Idle | StartFlag | FinalFlag => ZeroIns <= '0';
-				when others =>ZeroIns <= '1';
+		if txRST = '1' then
+			zeroIns <= '0';
+		elsif rising_edge(txCLK) then
+			case txState is
+				when Idle | StartFlag | FinalFlag => zeroIns <= '0';
+				when others =>zeroIns <= '1';
 			end case;
 		end if;
 	end process pZeroIns;
 
-
-
-	pTxRq : process(TxRST, TxWR, TxCLK)
+	-- generate Tx request signal for processor
+	pTxRq : process(txRST, txWR, txCLK)
 	begin
-		if TxRST = '1' then
-			TxRq <= TxReqChainEmpty; -- mark reg empty
-		elsif rising_edge(TxWR) then
-			TxRq (TxReqChainSize-1) <= '0'; -- insert "full" signal at top of metastab chain
-		elsif rising_edge(TxCLK) then
-			if TxBitCount = "000" and (TxState = SendData OR TxState = SendLast) then -- loading byte into shift reg
-				TxRq <= TxReqChainEmpty; -- signal that we've taken the data
+		if txRST = '1' then
+			txRq <= txReqChainEmpty; -- mark reg empty
+		elsif rising_edge(txWR) then
+			txRq (txReqChainSize-1) <= '0'; -- insert "full" signal at top of metastab chain
+		elsif rising_edge(txCLK) and dontSwallow = '1' then
+			if txBitCount = "000" and (txState = SendData OR txState = SendLast) then -- loading byte into shift reg
+				txRq <= txReqChainEmpty; -- signal that we've taken the data
 			else
-				TxRq(TxReqChainSize-2 downto 0) <= TxRq(TxReqChainSize-1 downto 1); -- shift the "full" signal through metastab chain
+				txRq(txReqChainSize-2 downto 0) <= txRq(txReqChainSize-1 downto 1); -- shift the "full" signal through metastab chain
 			end if;
 		end if;
 	end process pTxRq;
 
+	-- mark where crc should be calculated
+	process (txState, txShiftClk)
+	begin
+		if rising_edge(txShiftClk) then
+			if txState = SendData or txState = SendLast then
+				txCrcEn <= '1';
+				crcReset <= '0';
+			else
+				txCrcEn <= '0';
+				if txState = idle then
+					crcReset <='1';
+				else
+					crcReset <='0';
+				end if;
+			end if;
+		end if;
+	end process;
+
+
+	-- calculate CRC -- instantiate CRC engine
+	TxCrcGen : crc16  
+	port map (  clk => txShiftClk,
+				reset => crcReset,
+				ce => txCrcEn,
+				din => txD,
+				crc_sum => crcReg
+			); 
+
+
 	-- ******* Main state machine *********
 	-- register
-	process(TxBitCount(2), TxRST)
+	process(txShiftClk, txRST)
 	-- clocked on bit count rolling over (8 bits tx'd)
 	begin
-		if TxRST = '1' then
-			TxState <= Idle;
-		elsif falling_edge(TxBitCount(2)) then
-			TxState <= txNextState;
+		if txRST = '1' then
+			txState <= Idle;
+		elsif rising_edge(txShiftClk) then
+			if txBitCount = "000" then
+				txState <= txNextState;
+			else
+				txState <= txState;
+			end if;
 		end if;
 	end process;
 
 	-- state register inputs
 	process
-		( DataWaiting, TxState -- 
+		( DataWaiting, txState -- 
 		 )
 	begin
-		case TxState is
+		case txState is
 			when Idle =>
 				if DataWaiting then
-					TxNextState <= StartFlag;
+					txNextState <= StartFlag;
 				else
-					TxNextState <= Idle;
+					txNextState <= Idle;
 				end if;
 			when StartFlag =>
-				TxNextState <= SendData;
+				txNextState <= SendData;
 			when SendData =>
-				if TxLast = '1' then
-					TxNextState <= SendLast;
+				if txLast = '1' then
+					txNextState <= SendLast;
 				else
-					TxNextState <= SendData;
+					txNextState <= SendData;
 				end if;
 			when SendLast =>
-				TxNextState <= SendCRC1;
+				txNextState <= SendCRC1;
 			when SendCRC1 =>
-				TxNextState <= SendCRC2;
+				txNextState <= SendCRC2;
 			when SendCRC2 =>
-				TxNextState <= FinalFlag;
+				txNextState <= FinalFlag;
 			when FinalFlag =>
-				TxNextState <= Idle;
+				txNextState <= Idle;
 		end case;
 	end process;
 
-	-- clocking data into shift reg (out of Tx holding reg, CRC, flag or abort)
-	TxDataTx : process(TxRST, TxRq, TxCLK, TxShiftEnable)
+	-- clocking data into shift reg (out of tx holding reg, CRC, flag or abort)
+	pTxData : process(txRST, txRq, txCLK, txShiftEnable)
 	begin
-		if TxRST = '1' then
-			TxBitCount <= "000";
-		elsif rising_edge(TxCLK) then
-			if TxOneCount = "101" AND ZeroIns = '1' then
-				TxShiftReg(0) <= '0';
+		if txRST = '1' then
+			txBitCount <= "000";
+		elsif rising_edge(txCLK) then
+			if txOneCount = "100" AND ZeroIns = '1' then
+				txShiftReg(0) <= '0';
 				-- note we're not incrementing the bit count whilst we insert the extra zero
 			else
-				TxBitCount <= Std_Logic_Vector(unsigned(TxBitCount) + 1); -- increment bit count
-				if TxBitCount = "000" then -- we've reached a byte boundary
-					case TxState is
-						when Idle => null;
-						when StartFlag | FinalFlag =>
-							TxShiftReg <= "01111110";
+				txBitCount <= Std_Logic_Vector(unsigned(txBitCount) + 1); -- increment bit count
+				if txBitCount = "000" and dontSwallow = '1' then -- we've reached a byte boundary
+					case txState is
+						when Idle | StartFlag | FinalFlag =>
+							txShiftReg <= "01111110";
 						when SendData | SendLast =>
-							if TxRq(0) = '1' then
+							if txRq(0) = '1' then
 								-- we have underrun
 								-- TODO: insert underrun handling
 							else
 								-- load in next byte
-								TxShiftReg <= TxFIFO;
+								txShiftReg <= txFIFO;
 							end if;
 						when SendCRC1 => 
-							TxShiftReg <= crcReg (15 downto 8);
+							txShiftReg <= crcReg (15 downto 8);
 						when SendCRC2 =>
-							TxShiftReg <= crcReg (7 downto 0);
+							txShiftReg <= crcReg (7 downto 0);
 					end case;
 				else -- we need to shift out next bit
-					TxShiftReg (6 downto 0) <= TxShiftReg (7 downto 1);
+					txShiftReg (6 downto 0) <= txShiftReg (7 downto 1);
 				end if;
 			end if;
 		end if;
-	end process TxDataTx;
+	end process pTxData;
 
 	-- Ones counter counts successive ones when enabled
-	pTxOneCount : process(TxCLK, TxRST, TxEn)
+	pTxOneCount : process(txCLK, txRST, txEn)
 	begin
-		if TxRST = '1' OR TxEn = '0' then
-			TxOneCount <= "000";
-		elsif rising_edge(TxCLK) then
-			if TxShiftReg (0) = '0' then
-				TxOneCount <= "000";
+		if txRST = '1' OR txEn = '0' then
+			txOneCount <= "000";
+		elsif rising_edge(txCLK) then
+			if txShiftReg (0) = '0' then
+				txOneCount <= "000";
 			else
-				TxOneCount <= Std_Logic_Vector(unsigned(TxOneCount) + 1);
+				txOneCount <= Std_Logic_Vector(unsigned(txOneCount) + 1);
 			end if;
 		end if;
 	end process pTxOneCount;			
 
 end behavioural;
+
+
+------------------------------------------------------------------------- 
+-- 16-bit Serial CRC-CCITT Generator. 
+------------------------------------------------------------------------- 
+library ieee; 
+
+use ieee.std_logic_1164.all; 
+
+entity crc16 is 
+	port (clk, reset, ce, din: in std_logic; 
+		  crc_sum: out std_logic_vector(15 downto 0)); 
+end crc16; 
+       
+architecture behavior of crc16 is 
+    signal X: std_logic_vector(15 downto 0); 
+    
+begin 
+	reg:process(reset, clk, ce) 
+	begin 
+	if reset = '1' then 
+		X <= (others => '1'); 
+	elsif ce = '1' then 
+		if falling_edge(clk) then
+			X(0)  <= Din  xor X(15); 
+			X(1)  <= X(0); 
+			X(2)  <= X(1); 
+			X(3)  <= X(2); 
+			X(4)  <= X(3); 
+			X(5)  <= X(4) xor (din xor X(15)); 
+			X(6)  <= X(5); 
+			X(7)  <= X(6); 
+			X(8)  <= X(7); 
+			X(9)  <= X(8); 
+			X(10) <= X(9); 
+			X(11) <= X(10); 
+			X(12) <= X(11) xor (din xor X(15)); 
+			X(13) <= X(12); 
+			X(14) <= X(13); 
+			X(15) <= X(14); 
+	   end if; 
+	end if; 
+	end process; 
+	crc_sum <= X; 
+end behavior; 

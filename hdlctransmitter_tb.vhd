@@ -17,7 +17,7 @@ architecture behavioural of HdlcTransmitter_tb is
 		port (
 			-- microprocesser interface
 			Din :	in		Std_Logic_Vector (7 downto 0); -- Tx register
-			LastByte : in 	Std_Logic;
+			TxLast : in 	Std_Logic;
 			TxWR : 	in	 	Std_Logic;
 			TxReq : out		Std_Logic; -- high if space in register
 
@@ -27,13 +27,13 @@ architecture behavioural of HdlcTransmitter_tb is
 			TxCLK :	in		Std_Logic;
 
 			-- line interface := '0'
-			TxD :	out		Std_Logic;
+			TxD :	buffer	Std_Logic;
 			TxEn :	buffer	Std_Logic
 		);
 	end component HdlcTransmitter;
 
 	signal 	Din :	Std_Logic_Vector (7 downto 0); -- Tx register
-	signal	LastByte : Std_Logic := '0';
+	signal	TxLast : Std_Logic := '0';
 	signal	TxWR : 	Std_Logic := '0';
 	signal	TxReq : Std_Logic; -- high if space in register
 
@@ -50,7 +50,7 @@ architecture behavioural of HdlcTransmitter_tb is
 
 
 begin
-	transmitter : HdlcTransmitter PORT MAP (Din, LastByte, TxWR , TxReq, TxRST, TxCLK, TxD, TxEn);
+	transmitter : HdlcTransmitter PORT MAP (Din, TxLast, TxWR , TxReq, TxRST, TxCLK, TxD, TxEn);
 
 	process
 	-- drive the txClock
@@ -69,7 +69,7 @@ begin
 		if rising_edge(TxReq) then
 		byteCount <= byteCount + 1;
 			if byteCount > 5 then
-				LastByte <= '1';
+				TxLast <= '1';
 			end if;
 			Din <= "11111111";
 			TxWR <= '1' after 10 ns, '0' after 100 ns;
