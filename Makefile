@@ -3,9 +3,12 @@ GHDL_OPTS = --ieee=synopsys
 
 all: HDLC
 
+clean:
+	rm *.o *.cf *.vcd
+
 test: HDLC HDLC_tb
 
-current: HDLC HdlcTransmitter_tb
+current: hdlctransmitter_tb
 	#./hdlctransmitter_tb
 	ghdl -r  $(GHDL_OPTS) HdlcTransmitter_tb --vcd=HdlcTransmitter_tb.vcd --stop-time=10000us
 	#gtkwave HdlcTransmitter_tb.vcd
