@@ -3,6 +3,11 @@ GHDL_OPTS = --ieee=synopsys
 
 STOP_TIME = 10000us
 
+ifdef STOP_TIME
+	R_OPTS += --stop-time=$(STOP_TIME)
+endif
+
+
 all: hdlc
 
 clean:
@@ -17,7 +22,7 @@ current: hdlctransmitter_tb
 %_tb: %_tb.o %.o
 #	ghdl -e $(GHDL_OPTS) $*
 	ghdl -e $(GHDL_OPTS) $@
-	ghdl -r  $(GHDL_OPTS) $@ --vcd=$@.vcd --stop-time=$(STOP_TIME)
+	ghdl -r $(GHDL_OPTS) $@ --vcd=$@.vcd $(R_OPTS)
 	# To start a new gtkwave session:
 	#    gtkwave $@.vcd
 
