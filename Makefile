@@ -1,35 +1,30 @@
+# use the library version which includes std_logic_textio:
 GHDL_OPTS = --ieee=synopsys
 
+STOP_TIME = 10000us
 
-all: HDLC
+all: hdlc
 
 clean:
 	rm *.o *.cf *.vcd
 
-test: HDLC HDLC_tb
-
 current: hdlctransmitter_tb
+# hdlctransmitter
 	#./hdlctransmitter_tb
-	ghdl -r  $(GHDL_OPTS) HdlcTransmitter_tb --vcd=HdlcTransmitter_tb.vcd --stop-time=10000us
-	#gtkwave HdlcTransmitter_tb.vcd
+#	ghdl -r  $(GHDL_OPTS) hdlctransmitter_tb --vcd=hdlctransmitter_tb.vcd --stop-time=10000us
+	#gtkwave hdlctransmitter_tb.vcd
 
-#HDLC.o: HDLC.vhd
-#	ghdl -a $(GHDL_OPTS) HDLC.vhd
+%_tb: %_tb.o %.o
+#	ghdl -e $(GHDL_OPTS) $*
+	ghdl -e $(GHDL_OPTS) $@
+	ghdl -r  $(GHDL_OPTS) $@ --vcd=$@.vcd --stop-time=$(STOP_TIME)
+	# To start a new gtkwave session:
+	#    gtkwave $@.vcd
 
 %: %.o
 	ghdl -e $(GHDL_OPTS) $@
 
-# HDLC: HDLC.o
-# 	ghdl -e $(GHDL_OPTS) HDLC
-
-# HdlcTransmitter_tb: HDLC HdlcTransmitter_tb.o
-# 	ghdl -e $(GHDL_OPTS) HdlcTransmitter_tb
-
-%.o : %.vhd
+%.o: %.vhd
 	ghdl -a  $(GHDL_OPTS) $?
 
-
-HDLC_tb: HDLC_tb.o HDLC.o
-	ghdl -e  $(GHDL_OPTS) HDLC_tb
-	ghdl -r  $(GHDL_OPTS) HDLC_tb --vcd=HDLC_tb.vcd
-	gtkwave HDLC_tb.vcd
+.PRECIOUS: %.o
