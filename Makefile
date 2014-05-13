@@ -21,7 +21,7 @@ all: hdlc
 hdlc: *.o hdlc.o
 	ghdl -e $(GHDL_OPTS) hdlc
 
-current: hdlctransmitter_tb
+current: hdlctransmitter_tb crc16
 
 clean:
 	rm *.o *.cf *.vcd
@@ -30,7 +30,7 @@ clean:
 	ghdl -e $(GHDL_OPTS) $@
 	ghdl -r $(GHDL_OPTS) $@ --vcd=$@.vcd $(R_OPTS)
 	# To start a new gtkwave session:
-	#    gtkwave $@.vcd
+	#    gtkwave $@.vcd &
 
 %: %.o
 	ghdl -e $(GHDL_OPTS) $@
