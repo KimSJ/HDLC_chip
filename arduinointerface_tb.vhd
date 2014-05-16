@@ -40,10 +40,12 @@ architecture behavioural of arduinointerface_tb is
 	signal RnW  : Std_Logic := '1';
 	signal strb : Std_Logic := '1';
 	signal clock: Std_Logic;
-
+	signal	rst:  Std_Logic :='1';
+	
 	signal bidir : Std_Logic_Vector (3 downto 0) := "ZZZZ"; -- the databus 
 
-	signal q, i	:  Std_Logic_Vector (7 downto 0) := x"A5";
+	signal rd, wr: Std_Logic;
+	signal q, i	:  Std_Logic_Vector (7 downto 0) := x"A5"; -- i is the values read on input, q is values output by write
 
 	signal cycle : integer :=0;
 
@@ -54,7 +56,9 @@ architecture behavioural of arduinointerface_tb is
 			strb:	in Std_Logic;
 			RnW:	in Std_Logic;
 			clk:	in Std_Logic;
-			-- io pins
+			rst:	in Std_Logic;
+				-- io pins
+			rd, wr: out Std_Logic;
 			q:		out Std_Logic_Vector (7 downto 0);
 			i:		in  Std_Logic_Vector (7 downto 0)
 		);
@@ -69,7 +73,7 @@ architecture behavioural of arduinointerface_tb is
 
 	type tDataList is array (0 to 5) of tDataItem;
 
-	signal dataList : tDataList := (
+	constant dataList : tDataList := (
 		-- d, RnW, strb
 		-- read cycle
 		("ZZZZ", '1', '1'),
@@ -89,10 +93,15 @@ begin
 		strb => strb,
 		RnW => RnW,
 		clk => clock,
+		rst => rst,
+
+		rd => rd,
+		wr => wr,
 		q => q,	
 		i => i	
 	);
 
+	rst <= '1' after 0 ns, '0' after 100 ns; 
 	process
 	-- drive the txClock
 	begin
@@ -106,6 +115,9 @@ begin
 	begin
 		if rising_edge(clock) then
 	 		cycle <= (cycle + 1) mod (10 * dataList'length);
+	 		if cycle = 0 then
+	 			i <= (i(0) & i(7 downto 1)) xor "0" & i(0) & "00" & i(0) & "0" & i(0) & "0";
+	 		end if;
 	 		if (cycle mod 10) = 0 then
 				bidir <= dataList(cycle/10).d;
 				RnW   <= dataList(cycle/10).RnW;
