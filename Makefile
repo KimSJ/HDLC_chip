@@ -21,7 +21,11 @@ all: hdlc
 hdlc: *.o hdlc.o
 	ghdl -e $(GHDL_OPTS) hdlc
 
-current: hdlctransmitter_tb crc16
+current: hdlctransmitter_tb
+
+hdlctransmitter_tb: hdlctransmitter.o crc16.o hdlctransmitter_tb.o
+	ghdl -e $(GHDL_OPTS) hdlctransmitter_tb
+	ghdl -r $(GHDL_OPTS) $@ --vcd=$@.vcd $(R_OPTS)
 
 clean:
 	rm *.o *.cf *.vcd

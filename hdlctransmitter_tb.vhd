@@ -65,7 +65,7 @@ begin
 
 	process (TxReq)
 	-- write another byte
-	type tDataStream is array (0 to 6) of Std_Logic_Vector(7 downto 0);
+	type tDataStream is array (0 to 8) of Std_Logic_Vector(7 downto 0);
 	variable dataStream : tDataStream :=
 		(
 			x"AA",
@@ -74,13 +74,17 @@ begin
 			x"FF",
 			x"0F",
 			x"F0",
-			x"55"
+			x"55",
+			x"49",
+			x"54"
 		);
 	begin
 		if rising_edge(TxReq) then
-		byteCount <= (byteCount + 1) mod 7;
+		byteCount <= (byteCount + 1) mod 9;
 			if byteCount > 5 then
 				TxLast <= '1';
+			else
+				TxLast <= '0';
 			end if;
 			Din <= datastream(byteCount);
 			TxWR <= '1' after 10 ns, '0' after 100 ns;

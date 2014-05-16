@@ -126,7 +126,7 @@ begin
 	pTxShiftClk : process(txCLK, txOneCount)
 	begin
 		if falling_edge(txCLK) then
-			if txOneCount="100" and zeroIns = '1' then
+			if txOneCount="100" and txD = '1' and zeroIns = '1' then
 				dontSwallow <= '0';
 			else
 				dontSwallow <= '1';
@@ -269,7 +269,7 @@ begin
 		if txRST = '1' then
 			txBitCount <= "000";
 		elsif rising_edge(txCLK) then
-			if txOneCount = "100" AND ZeroIns = '1' then
+			if txOneCount = "100" and txD ='1' and ZeroIns = '1' then
 				txShiftReg(0) <= '0';
 				-- note we're not incrementing the bit count whilst we insert the extra zero
 			else
