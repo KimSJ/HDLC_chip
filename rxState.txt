@@ -1,0 +1,8 @@
+0 Reset
+1 Idle
+2 StartFlags
+3 RxData
+4 RxDone
+5 RxErr
+6 RxAbort
+7 RxUnderrun

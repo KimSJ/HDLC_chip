@@ -41,7 +41,10 @@ architecture behavioural of hdlcreceiver_tb is
 	signal rxLast : Std_Logic; -- the databus 
 	signal rxRD  : 	Std_Logic := '1';
 	signal rxReq : 	Std_Logic;
-	signal	rst:  	Std_Logic :='1';
+	signal rst:  	Std_Logic :='1';
+	signal rxErr : 	Std_Logic; -- high if CRC error
+	signal rxUnderrun : Std_Logic; -- high if byte not read in time
+	signal rxAbort : Std_Logic; -- high if Abort received mid-frame
 	
 	signal clock: 	Std_Logic := '1';
 
@@ -59,6 +62,9 @@ architecture behavioural of hdlcreceiver_tb is
 		rxLast : 	out 	Std_Logic;
 		rxRD : 		in	Std_Logic; -- read strobe
 		rxReq : 	out	Std_Logic; -- high if data available
+		rxErr : 	out Std_Logic; -- high if CRC error
+		rxUnderrun : out Std_Logic; -- high if byte not read in time
+		rxAbort : 	out Std_Logic; -- high if Abort received mid-frame
 
 		rxRST :		in	Std_Logic;
 
@@ -77,10 +83,10 @@ architecture behavioural of hdlcreceiver_tb is
 		rxRD: 	Std_Logic;
 	end record tDataItem;
 
-	type tDataList is array (0 to 25) of tDataItem;
+	type tDataList is array (0 to 44) of tDataItem;
 
 	constant dataList : tDataList := (
-		-- test abort
+		-- test abort (10 values)
 			('0','0','0'),
 			('1','0','0'),
 			('1','0','0'),
@@ -91,9 +97,10 @@ architecture behavioural of hdlcreceiver_tb is
 			('1','0','0'),
 			('1','0','0'),
 			('1','0','0'),
-		-- test abort clear
+			('1','0','0'),
+		-- test reset to abort clear (1 value)
 			('0','1','0'),
-		-- test flag detect
+		-- test flag detect (8 values)
 			('0','0','0'),
 			('1','0','0'),
 			('1','0','0'),
@@ -102,24 +109,47 @@ architecture behavioural of hdlcreceiver_tb is
 			('1','0','0'),
 			('1','0','0'),
 			('0','0','0'),
-		-- test inserted bit removal
+		-- test inserted bit removal (9 values)
 			('0','0','0'),
+			('1','0','0'),
+			('1','0','0'),
+			('1','0','0'),
+			('1','0','0'),
+			('1','0','0'),
+			('0','0','0'),
+			('0','0','0'),
+			('1','0','0'),
+		-- test normal data -- 0xAA (8 values)
+			('0','0','0'),
+			('1','0','0'),
+			('0','0','0'),
+			('1','0','0'),
+			('0','0','0'),
+			('1','0','0'),
+			('0','0','0'),
+			('1','0','0'),
+			-- test frame-end flag detect (8 values)
+			('0','0','0'),
+			('1','0','0'),
 			('1','0','0'),
 			('1','0','0'),
 			('1','0','0'),
 			('1','0','0'),
 			('1','0','0'),
 			('0','0','0')
-		);
+);
 
 begin
 
 	iface : hdlcreceiver
 	port map (
-		Dout => q,
-		rxLast => rxLast,
-		rxRD => rxRd,
-		rxReq => rxReq,
+		Dout		 => q,
+		rxLast		 => rxLast,
+		rxRD		 => rxRd,
+		rxReq		 => rxReq,
+		rxErr 	 	 => rxErr,
+		rxUnderrun 	 => rxUnderrun,
+		rxAbort  	 => rxAbort,
 
 		rxRST => rst,
 

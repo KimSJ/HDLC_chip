@@ -1,0 +1,7 @@
+0 Idle
+1 StartFlag
+2 SendData
+3 SendLast
+4 SendCRC1
+5 SendCRC2
+6 FinalFlag
