@@ -1,0 +1,7 @@
+C:\lscc\iCEcube2.2013.12\synpbase\bin64\c_vhdl.exe  -osyn  C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\iCEcube\iCEstickNibbleIO\iCEstickNibbleIO_Implmnt\synwork\iCEstickNibbleIO_comp.srs  -prodtype  synplify_pro  -primux -fixsmult -sdff_counter -nram -divnmod -encrypt  -pro  -dmgen  C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\iCEcube\iCEstickNibbleIO\iCEstickNibbleIO_Implmnt\dm  -lite   -ui -fid2 -ram -sharing on  -ll 2000 -autosm -ignore_undefined_lib  -lib work C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\arduinointerface.vhd -loga  C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\iCEcube\iCEstickNibbleIO\iCEstickNibbleIO_Implmnt\iCEstickNibbleIO.srr 
+rc:0 success:1
+C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\iCEcube\iCEstickNibbleIO\iCEstickNibbleIO_Implmnt\synwork\iCEstickNibbleIO_comp.srs|o|1400533894|2722
+C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\arduinointerface.vhd|i|1400532208|4456
+C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\iCEcube\iCEstickNibbleIO\iCEstickNibbleIO_Implmnt\iCEstickNibbleIO.srr|o|1400533894|2138
+C:\lscc\iCEcube2.2013.12\synpbase\bin64\c_vhdl.exe|i|1399313773|5457920
+C:\lscc\iCEcube2.2013.12\synpbase\bin\c_vhdl.exe|i|1399313765|1978368

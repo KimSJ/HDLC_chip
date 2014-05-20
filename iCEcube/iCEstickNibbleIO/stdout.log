@@ -1,0 +1,73 @@
+Running in Lattice mode
+
+
+Starting:    C:\lscc\iCEcube2.2013.12\synpbase\win64\mbin\synbatch.exe
+Install:     C:\lscc\iCEcube2.2013.12\synpbase
+Date:        Mon May 19 22:11:33 2014
+Version:     I-2013.09L 
+
+Arguments:   -product synplify_pro  -batch iCEstickNibbleIO_syn.prj
+ProductType: synplify_pro
+
+
+
+
+
+
+log file: "C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\iCEcube\iCEstickNibbleIO\iCEstickNibbleIO_Implmnt\iCEstickNibbleIO.srr"
+
+
+
+
+
+Running iCEstickNibbleIO_syn|iCEstickNibbleIO_Implmnt
+
+
+Running: Compile on iCEstickNibbleIO_syn|iCEstickNibbleIO_Implmnt
+
+
+Running: Compile Process on iCEstickNibbleIO_syn|iCEstickNibbleIO_Implmnt
+
+
+Running: Compile Input on iCEstickNibbleIO_syn|iCEstickNibbleIO_Implmnt
+
+Copied C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\iCEcube\iCEstickNibbleIO\iCEstickNibbleIO_Implmnt\synwork\iCEstickNibbleIO_comp.srs to C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\iCEcube\iCEstickNibbleIO\iCEstickNibbleIO_Implmnt\iCEstickNibbleIO.srs
+
+compiler Completed
+Return Code: 0
+Run Time:0h:00m:02s
+
+
+Complete: Compile Process on iCEstickNibbleIO_syn|iCEstickNibbleIO_Implmnt
+
+
+Running: Premap on iCEstickNibbleIO_syn|iCEstickNibbleIO_Implmnt
+
+premap Completed with warnings
+Return Code: 1
+Run Time:0h:00m:03s
+
+
+Complete: Compile on iCEstickNibbleIO_syn|iCEstickNibbleIO_Implmnt
+
+
+Running: Map on iCEstickNibbleIO_syn|iCEstickNibbleIO_Implmnt
+
+
+Running: Map & Optimize on iCEstickNibbleIO_syn|iCEstickNibbleIO_Implmnt
+
+fpga_mapper Completed with warnings
+Return Code: 1
+Run Time:0h:00m:03s
+
+
+Complete: Map on iCEstickNibbleIO_syn|iCEstickNibbleIO_Implmnt
+
+Complete: Logic Synthesis on iCEstickNibbleIO_syn|iCEstickNibbleIO_Implmnt
+
+exit status=0
+
+
+exit status=0
+
+

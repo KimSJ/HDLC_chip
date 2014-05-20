@@ -1,0 +1,28 @@
+#defaultlanguage:vhdl
+#OPTIONS:"|-prodtype|synplify_pro|-primux|-fixsmult|-sdff_counter|-nram|-divnmod|-encrypt|-pro|-lite|-ui|-fid2|-ram|-sharing|on|-ll|2000|-autosm|-ignore_undefined_lib|-lib|work"
+#CUR:"C:\\lscc\\iCEcube2.2013.12\\synpbase\\bin64\\c_vhdl.exe":1399313773
+#CUR:"C:\\lscc\\iCEcube2.2013.12\\synpbase\\lib\\vhd\\location.map":1399313785
+#CUR:"C:\\lscc\\iCEcube2.2013.12\\synpbase\\lib\\vhd\\std.vhd":1399313785
+#CUR:"C:\\lscc\\iCEcube2.2013.12\\synpbase\\lib\\vhd\\snps_haps_pkg.vhd":1399313785
+#CUR:"C:\\lscc\\iCEcube2.2013.12\\synpbase\\lib\\vhd\\std1164.vhd":1399313785
+#CUR:"C:\\lscc\\iCEcube2.2013.12\\synpbase\\lib\\vhd\\numeric.vhd":1399313785
+#CUR:"C:\\lscc\\iCEcube2.2013.12\\synpbase\\lib\\vhd\\umr_capim.vhd":1399313785
+#CUR:"C:\\lscc\\iCEcube2.2013.12\\synpbase\\lib\\vhd\\arith.vhd":1399313785
+#CUR:"C:\\lscc\\iCEcube2.2013.12\\synpbase\\lib\\vhd\\unsigned.vhd":1399313785
+#CUR:"C:\\Users\\Kim\\Documents\\Development\\HDLs\\HDLC_chip\\arduinointerface.vhd":1400532208
+#CUR:"C:\\lscc\\iCEcube2.2013.12\\synpbase\\lib\\vhd\\std_textio.vhd":1399313785
+#CUR:"C:\\lscc\\iCEcube2.2013.12\\synpbase\\lib\\vhd\\std_logic_textio.vhd":1399313785
+0 "C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\arduinointerface.vhd" vhdl
+
+# Dependency Lists (Uses list)
+0 -1
+
+# Dependency Lists (Users Of)
+0 -1
+
+# Design Unit to File Association
+arch work arduinointerface behavioural 0
+module work arduinointerface 0
+
+
+# Configuration files used

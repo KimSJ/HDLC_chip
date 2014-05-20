@@ -1,0 +1,18 @@
+@P:  Worst Slack : -0.630
+@P:  arduinointerface|clk - Estimated Frequency : 238.1 MHz
+@P:  arduinointerface|clk - Requested Frequency : 280.1 MHz
+@P:  arduinointerface|clk - Estimated Period : 4.200
+@P:  arduinointerface|clk - Requested Period : 3.570
+@P:  arduinointerface|clk - Slack : -0.630
+@P:  Worst Slack(min analysis) : 2.102
+@P:  arduinointerface|clk - Estimated Frequency(min analysis) : 238.1 MHz
+@P:  arduinointerface|clk - Requested Frequency(min analysis) : 280.1 MHz
+@P:  arduinointerface|clk - Estimated Period(min analysis) : 4.200
+@P:  arduinointerface|clk - Requested Period(min analysis) : 3.570
+@P:  arduinointerface|clk - Slack(min analysis) : -0.630
+@P: arduinointerface Part : ice40hx1ktq144
+@P: arduinointerface I/O primitives : 26
+@P: arduinointerface I/O Register bits : 0
+@P: arduinointerface Register bits (Non I/O) : 26 (2%)
+@P: arduinointerface Total Luts : 21 (1%)
+@P:  CPU Time : 0h:00m:02s

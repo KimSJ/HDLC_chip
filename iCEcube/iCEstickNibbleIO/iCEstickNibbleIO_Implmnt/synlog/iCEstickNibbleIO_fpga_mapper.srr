@@ -1,0 +1,420 @@
+Synopsys Lattice Technology Mapper, Version maplat, Build 006R, Built Dec 13 2013 02:09:32
+Copyright (C) 1994-2013, Synopsys, Inc. This software and the associated documentation are proprietary to Synopsys, Inc. This software may only be used in accordance with the terms and conditions of a written license agreement with Synopsys, Inc.  All other use or distribution of the software is strictly prohibited.
+Product Version I-2013.09L 
+
+Mapper Startup Complete (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 99MB peak: 100MB)
+
+@N: MF248 |Running in 64-bit mode.
+@N: MF666 |Clock conversion enabled 
+
+Design Input Complete (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 99MB peak: 101MB)
+
+
+Mapper Initialization Complete (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 99MB peak: 101MB)
+
+
+Start loading timing files (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 100MB peak: 101MB)
+
+
+Finished loading timing files (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 100MB peak: 102MB)
+
+
+
+Starting Optimization and Mapping (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 130MB peak: 132MB)
+
+
+Available hyper_sources - for debug and ip models
+	None Found
+
+@N: MT206 |Auto Constrain mode is enabled
+
+Finished RTL optimizations (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 129MB peak: 132MB)
+
+
+Finished factoring (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 130MB peak: 132MB)
+
+
+Finished gated-clock and generated-clock conversion (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 130MB peak: 132MB)
+
+
+Finished generic timing optimizations - Pass 1 (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 130MB peak: 132MB)
+
+
+Starting Early Timing Optimization (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 130MB peak: 132MB)
+
+
+Finished Early Timing Optimization (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 130MB peak: 132MB)
+
+
+Finished generic timing optimizations - Pass 2 (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 130MB peak: 132MB)
+
+
+Finished preparing to map (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 130MB peak: 132MB)
+
+
+Finished technology mapping (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 130MB peak: 132MB)
+
+Pass		 CPU time		Worst Slack		Luts / Registers
+------------------------------------------------------------
+Pass		 CPU time		Worst Slack		Luts / Registers
+------------------------------------------------------------
+------------------------------------------------------------
+
+@N: FX271 :"c:\users\kim\documents\development\hdls\hdlc_chip\arduinointerface.vhd":60:27:60:29|Instance "strbin[1]" with 10 loads replicated 1 times to improve timing 
+@N: FX271 :|Instance "RnWin_i[2]" with 4 loads replicated 3 times to improve timing 
+Timing driven replication report
+Added 1 Registers via timing driven replication
+Added 3 LUTs via timing driven replication
+
+
+@N: FX271 :"c:\users\kim\documents\development\hdls\hdlc_chip\arduinointerface.vhd":60:27:60:29|Instance "RnWin[1]" with 8 loads replicated 1 times to improve timing 
+@N: FX271 :"c:\users\kim\documents\development\hdls\hdlc_chip\arduinointerface.vhd":60:27:60:29|Instance "strbin[0]" with 8 loads replicated 1 times to improve timing 
+Timing driven replication report
+Added 2 Registers via timing driven replication
+Added 0 LUTs via timing driven replication
+
+Pass		 CPU time		Worst Slack		Luts / Registers
+------------------------------------------------------------
+------------------------------------------------------------
+
+
+
+Pass		 CPU time		Worst Slack		Luts / Registers
+------------------------------------------------------------
+------------------------------------------------------------
+
+@A: BN291 :"c:\users\kim\documents\development\hdls\hdlc_chip\arduinointerface.vhd":60:27:60:29|Boundary register dout[3] packed into a complex cell. To disable register packing, set syn_keep=1 on net between register and complex cell. 
+@A: BN291 :"c:\users\kim\documents\development\hdls\hdlc_chip\arduinointerface.vhd":60:27:60:29|Boundary register dout[2] packed into a complex cell. To disable register packing, set syn_keep=1 on net between register and complex cell. 
+@A: BN291 :"c:\users\kim\documents\development\hdls\hdlc_chip\arduinointerface.vhd":60:27:60:29|Boundary register dout[1] packed into a complex cell. To disable register packing, set syn_keep=1 on net between register and complex cell. 
+@A: BN291 :"c:\users\kim\documents\development\hdls\hdlc_chip\arduinointerface.vhd":60:27:60:29|Boundary register dout[0] packed into a complex cell. To disable register packing, set syn_keep=1 on net between register and complex cell. 
+@N: FX1016 :"c:\users\kim\documents\development\hdls\hdlc_chip\arduinointerface.vhd":57:2:57:4|SB_GB_IO inserted on the port clk.
+@N: FX1016 :"c:\users\kim\documents\development\hdls\hdlc_chip\arduinointerface.vhd":58:2:58:4|SB_GB_IO inserted on the port rst.
+
+Finished technology timing optimizations and critical path resynthesis (Real Time elapsed 0h:00m:01s; CPU Time elapsed 0h:00m:00s; Memory used current: 130MB peak: 132MB)
+
+
+Finished restoring hierarchy (Real Time elapsed 0h:00m:01s; CPU Time elapsed 0h:00m:00s; Memory used current: 130MB peak: 132MB)
+
+
+
+#### START OF CLOCK OPTIMIZATION REPORT #####[
+
+1 non-gated/non-generated clock tree(s) driving 26 clock pin(s) of sequential element(s)
+0 gated/generated clock tree(s) driving 0 clock pin(s) of sequential element(s)
+0 instances converted, 0 sequential instances remain driven by gated/generated clocks
+
+=========================== Non-Gated/Non-Generated Clocks ============================
+Clock Tree ID     Driving Element     Drive Element Type     Fanout     Sample Instance
+---------------------------------------------------------------------------------------
+@K:CKID0001       clk_ibuf_gb_io      SB_GB_IO               26         dout_er[0]     
+=======================================================================================
+
+
+##### END OF CLOCK OPTIMIZATION REPORT ######]
+
+Writing Analyst data base C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\iCEcube\iCEstickNibbleIO\iCEstickNibbleIO_Implmnt\iCEstickNibbleIO.srm
+
+Finished Writing Netlist Databases (Real Time elapsed 0h:00m:01s; CPU Time elapsed 0h:00m:01s; Memory used current: 129MB peak: 132MB)
+
+Writing EDIF Netlist and constraint files
+@N: BW103 |Synopsys Constraint File time units using default value of 1ns 
+@N: BW107 |Synopsys Constraint File capacitance units using default value of 1pF 
+I-2013.09L 
+
+Finished Writing EDIF Netlist and constraint files (Real Time elapsed 0h:00m:02s; CPU Time elapsed 0h:00m:01s; Memory used current: 131MB peak: 133MB)
+
+@W: MT420 |Found inferred clock arduinointerface|clk with period 3.57ns. Please declare a user-defined clock on object "p:clk"
+
+
+
+##### START OF TIMING REPORT #####[
+# Timing Report written on Mon May 19 22:11:41 2014
+#
+
+
+Top view:               arduinointerface
+Requested Frequency:    280.1 MHz
+Wire load mode:         top
+Paths requested:        5
+Constraint File(s):    
+@N: MT320 |Timing report estimates place and route data. Please look at the place and route timing report for final timing.
+
+@N: MT322 |Clock constraints cover only FF-to-FF paths associated with the clock.
+
+
+
+Performance Summary 
+*******************
+
+
+Worst slack in design: -0.630
+
+                         Requested     Estimated     Requested     Estimated                Clock        Clock                
+Starting Clock           Frequency     Frequency     Period        Period        Slack      Type         Group                
+------------------------------------------------------------------------------------------------------------------------------
+arduinointerface|clk     280.1 MHz     238.1 MHz     3.570         4.200         -0.630     inferred     Autoconstr_clkgroup_0
+==============================================================================================================================
+
+
+
+
+
+Clock Relationships
+*******************
+
+Clocks                                      |    rise  to  rise    |    fall  to  fall   |    rise  to  fall   |    fall  to  rise 
+-----------------------------------------------------------------------------------------------------------------------------------
+Starting              Ending                |  constraint  slack   |  constraint  slack  |  constraint  slack  |  constraint  slack
+-----------------------------------------------------------------------------------------------------------------------------------
+arduinointerface|clk  arduinointerface|clk  |  3.570       -0.630  |  No paths    -      |  No paths    -      |  No paths    -    
+===================================================================================================================================
+ Note: 'No paths' indicates there are no paths in the design for that pair of clock edges.
+       'Diff grp' indicates that paths exist but the starting clock and ending clock are in different clock groups.
+
+
+
+Interface Information 
+*********************
+
+No IO constraint found
+
+
+
+====================================
+Detailed Report for Clock: arduinointerface|clk
+====================================
+
+
+
+Starting Points with Worst Slack
+********************************
+
+                   Starting                                                         Arrival           
+Instance           Reference                Type         Pin     Net                Time        Slack 
+                   Clock                                                                              
+------------------------------------------------------------------------------------------------------
+RnWin[1]           arduinointerface|clk     SB_DFFR      Q       RnWin[1]           0.540       -0.630
+RnWin[2]           arduinointerface|clk     SB_DFFR      Q       RnWin[2]           0.540       -0.630
+dout_er[0]         arduinointerface|clk     SB_DFFER     Q       dout[0]            0.540       -0.581
+dout_er[1]         arduinointerface|clk     SB_DFFER     Q       dout[1]            0.540       -0.581
+dout_er[2]         arduinointerface|clk     SB_DFFER     Q       dout[2]            0.540       -0.581
+dout_er[3]         arduinointerface|clk     SB_DFFER     Q       dout[3]            0.540       -0.581
+strbin[0]          arduinointerface|clk     SB_DFFR      Q       strbin[0]          0.540       -0.581
+strbin[1]          arduinointerface|clk     SB_DFFR      Q       strbin[1]          0.540       -0.560
+RnWin_fast[1]      arduinointerface|clk     SB_DFFR      Q       RnWin_fast[1]      0.540       -0.525
+strbin_fast[1]     arduinointerface|clk     SB_DFFR      Q       strbin_fast[1]     0.540       -0.525
+======================================================================================================
+
+
+Ending Points with Worst Slack
+******************************
+
+                    Starting                                                         Required           
+Instance            Reference                Type         Pin     Net                Time         Slack 
+                    Clock                                                                               
+--------------------------------------------------------------------------------------------------------
+RnWin_rep0_i[1]     arduinointerface|clk     SB_DFFS      D       RnWin_i_2_rep1     3.465        -0.630
+RnWin_rep1_i[1]     arduinointerface|clk     SB_DFFS      D       RnWin_i_2_rep2     3.465        -0.630
+RnWin_rep2_i[1]     arduinointerface|clk     SB_DFFS      D       RnWin_i_2_rep3     3.465        -0.630
+RnWin_rep3_i[1]     arduinointerface|clk     SB_DFFS      D       RnWin_i[2]         3.465        -0.630
+dout_er[0]          arduinointerface|clk     SB_DFFER     D       dout_er_RNO[0]     3.465        -0.630
+dout_er[1]          arduinointerface|clk     SB_DFFER     D       dout_er_RNO[1]     3.465        -0.630
+dout_er[2]          arduinointerface|clk     SB_DFFER     D       dout_er_RNO[2]     3.465        -0.630
+dout_er[3]          arduinointerface|clk     SB_DFFER     D       dout_er_RNO[3]     3.465        -0.630
+rd                  arduinointerface|clk     SB_DFFR      D       rd_1               3.465        -0.630
+wr                  arduinointerface|clk     SB_DFFR      D       q_0_sqmuxa         3.465        -0.630
+========================================================================================================
+
+
+
+Worst Path Information
+***********************
+
+
+Path information for path number 1: 
+      Requested Period:                      3.570
+    - Setup time:                            0.105
+    + Clock delay at ending point:           0.000 (ideal)
+    = Required time:                         3.465
+
+    - Propagation time:                      4.095
+    - Clock delay at starting point:         0.000 (ideal)
+    = Slack (critical) :                     -0.630
+
+    Number of logic level(s):                1
+    Starting point:                          RnWin[1] / Q
+    Ending point:                            dout_er[0] / D
+    The start point is clocked by            arduinointerface|clk [rising] on pin C
+    The end   point is clocked by            arduinointerface|clk [rising] on pin C
+
+Instance / Net                  Pin      Pin               Arrival     No. of    
+Name               Type         Name     Dir     Delay     Time        Fan Out(s)
+---------------------------------------------------------------------------------
+RnWin[1]           SB_DFFR      Q        Out     0.540     0.540       -         
+RnWin[1]           Net          -        -       1.599     -           6         
+dout_er_RNO[0]     SB_LUT4      I0       In      -         2.139       -         
+dout_er_RNO[0]     SB_LUT4      O        Out     0.449     2.588       -         
+dout_er_RNO[0]     Net          -        -       1.507     -           1         
+dout_er[0]         SB_DFFER     D        In      -         4.095       -         
+=================================================================================
+Total path delay (propagation time + setup) of 4.200 is 1.094(26.0%) logic and 3.106(74.0%) route.
+Path delay compensated for clock skew. Clock skew is added to clock-to-out value, and is subtracted from setup time value
+
+
+Path information for path number 2: 
+      Requested Period:                      3.570
+    - Setup time:                            0.105
+    + Clock delay at ending point:           0.000 (ideal)
+    = Required time:                         3.465
+
+    - Propagation time:                      4.095
+    - Clock delay at starting point:         0.000 (ideal)
+    = Slack (critical) :                     -0.630
+
+    Number of logic level(s):                1
+    Starting point:                          RnWin[2] / Q
+    Ending point:                            RnWin_rep0_i[1] / D
+    The start point is clocked by            arduinointerface|clk [rising] on pin C
+    The end   point is clocked by            arduinointerface|clk [rising] on pin C
+
+Instance / Net                      Pin      Pin               Arrival     No. of    
+Name                    Type        Name     Dir     Delay     Time        Fan Out(s)
+-------------------------------------------------------------------------------------
+RnWin[2]                SB_DFFR     Q        Out     0.540     0.540       -         
+RnWin[2]                Net         -        -       1.599     -           6         
+RnWin_rep0_i_RNO[1]     SB_LUT4     I0       In      -         2.139       -         
+RnWin_rep0_i_RNO[1]     SB_LUT4     O        Out     0.449     2.588       -         
+RnWin_i_2_rep1          Net         -        -       1.507     -           1         
+RnWin_rep0_i[1]         SB_DFFS     D        In      -         4.095       -         
+=====================================================================================
+Total path delay (propagation time + setup) of 4.200 is 1.094(26.0%) logic and 3.106(74.0%) route.
+Path delay compensated for clock skew. Clock skew is added to clock-to-out value, and is subtracted from setup time value
+
+
+Path information for path number 3: 
+      Requested Period:                      3.570
+    - Setup time:                            0.105
+    + Clock delay at ending point:           0.000 (ideal)
+    = Required time:                         3.465
+
+    - Propagation time:                      4.095
+    - Clock delay at starting point:         0.000 (ideal)
+    = Slack (critical) :                     -0.630
+
+    Number of logic level(s):                1
+    Starting point:                          RnWin[1] / Q
+    Ending point:                            dout_er[3] / D
+    The start point is clocked by            arduinointerface|clk [rising] on pin C
+    The end   point is clocked by            arduinointerface|clk [rising] on pin C
+
+Instance / Net                  Pin      Pin               Arrival     No. of    
+Name               Type         Name     Dir     Delay     Time        Fan Out(s)
+---------------------------------------------------------------------------------
+RnWin[1]           SB_DFFR      Q        Out     0.540     0.540       -         
+RnWin[1]           Net          -        -       1.599     -           6         
+dout_er_RNO[3]     SB_LUT4      I0       In      -         2.139       -         
+dout_er_RNO[3]     SB_LUT4      O        Out     0.449     2.588       -         
+dout_er_RNO[3]     Net          -        -       1.507     -           1         
+dout_er[3]         SB_DFFER     D        In      -         4.095       -         
+=================================================================================
+Total path delay (propagation time + setup) of 4.200 is 1.094(26.0%) logic and 3.106(74.0%) route.
+Path delay compensated for clock skew. Clock skew is added to clock-to-out value, and is subtracted from setup time value
+
+
+Path information for path number 4: 
+      Requested Period:                      3.570
+    - Setup time:                            0.105
+    + Clock delay at ending point:           0.000 (ideal)
+    = Required time:                         3.465
+
+    - Propagation time:                      4.095
+    - Clock delay at starting point:         0.000 (ideal)
+    = Slack (critical) :                     -0.630
+
+    Number of logic level(s):                1
+    Starting point:                          RnWin[1] / Q
+    Ending point:                            dout_er[2] / D
+    The start point is clocked by            arduinointerface|clk [rising] on pin C
+    The end   point is clocked by            arduinointerface|clk [rising] on pin C
+
+Instance / Net                  Pin      Pin               Arrival     No. of    
+Name               Type         Name     Dir     Delay     Time        Fan Out(s)
+---------------------------------------------------------------------------------
+RnWin[1]           SB_DFFR      Q        Out     0.540     0.540       -         
+RnWin[1]           Net          -        -       1.599     -           6         
+dout_er_RNO[2]     SB_LUT4      I0       In      -         2.139       -         
+dout_er_RNO[2]     SB_LUT4      O        Out     0.449     2.588       -         
+dout_er_RNO[2]     Net          -        -       1.507     -           1         
+dout_er[2]         SB_DFFER     D        In      -         4.095       -         
+=================================================================================
+Total path delay (propagation time + setup) of 4.200 is 1.094(26.0%) logic and 3.106(74.0%) route.
+Path delay compensated for clock skew. Clock skew is added to clock-to-out value, and is subtracted from setup time value
+
+
+Path information for path number 5: 
+      Requested Period:                      3.570
+    - Setup time:                            0.105
+    + Clock delay at ending point:           0.000 (ideal)
+    = Required time:                         3.465
+
+    - Propagation time:                      4.095
+    - Clock delay at starting point:         0.000 (ideal)
+    = Slack (critical) :                     -0.630
+
+    Number of logic level(s):                1
+    Starting point:                          RnWin[1] / Q
+    Ending point:                            dout_er[1] / D
+    The start point is clocked by            arduinointerface|clk [rising] on pin C
+    The end   point is clocked by            arduinointerface|clk [rising] on pin C
+
+Instance / Net                  Pin      Pin               Arrival     No. of    
+Name               Type         Name     Dir     Delay     Time        Fan Out(s)
+---------------------------------------------------------------------------------
+RnWin[1]           SB_DFFR      Q        Out     0.540     0.540       -         
+RnWin[1]           Net          -        -       1.599     -           6         
+dout_er_RNO[1]     SB_LUT4      I0       In      -         2.139       -         
+dout_er_RNO[1]     SB_LUT4      O        Out     0.449     2.588       -         
+dout_er_RNO[1]     Net          -        -       1.507     -           1         
+dout_er[1]         SB_DFFER     D        In      -         4.095       -         
+=================================================================================
+Total path delay (propagation time + setup) of 4.200 is 1.094(26.0%) logic and 3.106(74.0%) route.
+Path delay compensated for clock skew. Clock skew is added to clock-to-out value, and is subtracted from setup time value
+
+
+
+##### END OF TIMING REPORT #####]
+
+---------------------------------------
+Resource Usage Report for arduinointerface 
+
+Mapping to part: ice40hx1ktq144
+Cell usage:
+SB_DFFER        12 uses
+SB_DFFR         10 uses
+SB_DFFS         4 uses
+SB_LUT4         21 uses
+
+I/O ports: 26
+I/O primitives: 26
+SB_GB_IO       2 uses
+SB_IO          24 uses
+
+I/O Register bits:                  0
+Register bits not including I/Os:   26 (2%)
+Total load per clock:
+   arduinointerface|clk: 1
+
+Mapping Summary:
+Total  LUTs: 21 (1%)
+
+Distribution of All Consumed LUTs = LUT4 
+Distribution of All Consumed Luts 21 = 21 
+
+Mapper successful!
+
+At Mapper Exit (Real Time elapsed 0h:00m:02s; CPU Time elapsed 0h:00m:02s; Memory used current: 54MB peak: 133MB)
+
+Process took 0h:00m:02s realtime, 0h:00m:02s cputime
+# Mon May 19 22:11:41 2014
+
+###########################################################]

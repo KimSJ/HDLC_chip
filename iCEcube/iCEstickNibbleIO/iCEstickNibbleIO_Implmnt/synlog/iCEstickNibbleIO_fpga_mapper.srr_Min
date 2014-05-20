@@ -1,0 +1,130 @@
+
+
+##### START OF TIMING REPORT #####[
+# Timing Report written on Mon May 19 22:11:41 2014
+#
+
+
+Top view:               arduinointerface
+Requested Frequency:    280.1 MHz
+Wire load mode:         top
+Paths requested:        5
+Constraint File(s):    
+@N: MT320 |Timing report estimates place and route data. Please look at the place and route timing report for final timing.
+
+@N: MT322 |Clock constraints cover only FF-to-FF paths associated with the clock.
+
+
+
+Performance Summary 
+*******************
+
+
+Worst slack in design: 2.102
+
+                         Requested     Estimated     Requested     Estimated                Clock        Clock                
+Starting Clock           Frequency     Frequency     Period        Period        Slack      Type         Group                
+------------------------------------------------------------------------------------------------------------------------------
+arduinointerface|clk     280.1 MHz     238.1 MHz     3.570         4.200         -0.630     inferred     Autoconstr_clkgroup_0
+==============================================================================================================================
+
+
+
+Clock Relationships
+*******************
+
+Clocks                                      |    rise  to  rise   |    fall  to  fall   |    rise  to  fall   |    fall  to  rise 
+----------------------------------------------------------------------------------------------------------------------------------
+Starting              Ending                |  constraint  slack  |  constraint  slack  |  constraint  slack  |  constraint  slack
+----------------------------------------------------------------------------------------------------------------------------------
+arduinointerface|clk  arduinointerface|clk  |  0.000       2.102  |  No paths    -      |  No paths    -      |  No paths    -    
+==================================================================================================================================
+ Note: 'No paths' indicates there are no paths in the design for that pair of clock edges.
+       'Diff grp' indicates that paths exist but the starting clock and ending clock are in different clock groups.
+
+
+
+Interface Information 
+*********************
+
+No IO constraint found
+
+
+
+====================================
+Detailed Report for Clock: arduinointerface|clk
+====================================
+
+
+
+Starting Points with Worst Slack
+********************************
+
+                   Starting                                                         Arrival          
+Instance           Reference                Type         Pin     Net                Time        Slack
+                   Clock                                                                             
+-----------------------------------------------------------------------------------------------------
+RnWin[2]           arduinointerface|clk     SB_DFFR      Q       RnWin[2]           0.378       2.872
+strbin[1]          arduinointerface|clk     SB_DFFR      Q       strbin[1]          0.378       2.872
+strbin[2]          arduinointerface|clk     SB_DFFR      Q       strbin[2]          0.378       2.872
+strbin[0]          arduinointerface|clk     SB_DFFR      Q       strbin[0]          0.378       3.631
+dout_er[0]         arduinointerface|clk     SB_DFFER     Q       dout[0]            0.378       3.676
+dout_er[1]         arduinointerface|clk     SB_DFFER     Q       dout[1]            0.378       3.676
+dout_er[2]         arduinointerface|clk     SB_DFFER     Q       dout[2]            0.378       3.676
+dout_er[3]         arduinointerface|clk     SB_DFFER     Q       dout[3]            0.378       3.676
+RnWin[1]           arduinointerface|clk     SB_DFFR      Q       RnWin[1]           0.378       3.680
+strbin_fast[1]     arduinointerface|clk     SB_DFFR      Q       strbin_fast[1]     0.378       3.729
+=====================================================================================================
+
+
+Ending Points with Worst Slack
+******************************
+
+                   Starting                                                         Required          
+Instance           Reference                Type         Pin     Net                Time         Slack
+                   Clock                                                                              
+------------------------------------------------------------------------------------------------------
+RnWin[1]           arduinointerface|clk     SB_DFFR      D       RnWin[2]           0.074        2.102
+RnWin_fast[1]      arduinointerface|clk     SB_DFFR      D       RnWin[2]           0.074        2.102
+strbin[0]          arduinointerface|clk     SB_DFFR      D       strbin[1]          0.074        2.102
+strbin[1]          arduinointerface|clk     SB_DFFR      D       strbin[2]          0.074        2.102
+strbin_fast[0]     arduinointerface|clk     SB_DFFR      D       strbin[1]          0.074        2.102
+strbin_fast[1]     arduinointerface|clk     SB_DFFR      D       strbin[2]          0.074        2.102
+dout_er[0]         arduinointerface|clk     SB_DFFER     D       dout_er_RNO[0]     0.074        2.700
+dout_er[1]         arduinointerface|clk     SB_DFFER     D       dout_er_RNO[1]     0.074        2.700
+dout_er[2]         arduinointerface|clk     SB_DFFER     D       dout_er_RNO[2]     0.074        2.700
+dout_er[3]         arduinointerface|clk     SB_DFFER     D       dout_er_RNO[3]     0.074        2.700
+======================================================================================================
+
+
+
+Worst Path Information
+***********************
+
+
+Path information for path number 1: 
+    Propagation time:                        2.176
+    + Clock delay at starting point:         0.000 (ideal)
+    - Requested Period:                      0.000
+    - Hold time:                             0.074
+    - Clock delay at ending point:           0.000 (ideal)
+    = Slack (critical) :                     2.102
+
+    Number of logic level(s):                0
+    Starting point:                          RnWin[2] / Q
+    Ending point:                            RnWin[1] / D
+    The start point is clocked by            arduinointerface|clk [rising] on pin C
+    The end   point is clocked by            arduinointerface|clk [rising] on pin C
+
+Instance / Net                 Pin      Pin               Arrival     No. of    
+Name               Type        Name     Dir     Delay     Time        Fan Out(s)
+--------------------------------------------------------------------------------
+RnWin[2]           SB_DFFR     Q        Out     0.378     0.378       -         
+RnWin[2]           Net         -        -       1.798     -           6         
+RnWin[1]           SB_DFFR     D        In      -         2.176       -         
+================================================================================
+
+
+
+##### END OF TIMING REPORT #####]
+

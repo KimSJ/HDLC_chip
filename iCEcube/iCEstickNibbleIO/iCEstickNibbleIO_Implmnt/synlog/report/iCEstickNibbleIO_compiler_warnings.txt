@@ -1,0 +1,5 @@
+@W: CG296 :"C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\arduinointerface.vhd":108:12:108:18|Incomplete sensitivity list - assuming completeness
+@W: CG290 :"C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\arduinointerface.vhd":114:12:114:15|Referenced variable dout is not in sensitivity list
+@W: CG290 :"C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\arduinointerface.vhd":112:12:112:12|Referenced variable i is not in sensitivity list
+@W: CL260 :"C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\arduinointerface.vhd":60:27:60:29|Pruning register bit 0 of RnWin(2 downto 0)  
+

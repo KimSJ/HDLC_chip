@@ -1,0 +1,46 @@
+Synopsys Lattice Technology Pre-mapping, Version maplat, Build 006R, Built Dec 13 2013 02:09:32
+Copyright (C) 1994-2013, Synopsys, Inc. This software and the associated documentation are proprietary to Synopsys, Inc. This software may only be used in accordance with the terms and conditions of a written license agreement with Synopsys, Inc.  All other use or distribution of the software is strictly prohibited.
+Product Version I-2013.09L 
+
+Mapper Startup Complete (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 99MB peak: 100MB)
+
+@L: C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\iCEcube\iCEstickNibbleIO\iCEstickNibbleIO_Implmnt\iCEstickNibbleIO_scck.rpt 
+Printing clock  summary report in "C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\iCEcube\iCEstickNibbleIO\iCEstickNibbleIO_Implmnt\iCEstickNibbleIO_scck.rpt" file 
+@N: MF248 |Running in 64-bit mode.
+@N: MF666 |Clock conversion enabled 
+
+Design Input Complete (Real Time elapsed 0h:00m:00s; CPU Time elapsed 0h:00m:00s; Memory used current: 100MB peak: 102MB)
+
+
+Mapper Initialization Complete (Real Time elapsed 0h:00m:01s; CPU Time elapsed 0h:00m:00s; Memory used current: 100MB peak: 102MB)
+
+
+Start loading timing files (Real Time elapsed 0h:00m:01s; CPU Time elapsed 0h:00m:00s; Memory used current: 101MB peak: 102MB)
+
+
+Finished loading timing files (Real Time elapsed 0h:00m:01s; CPU Time elapsed 0h:00m:00s; Memory used current: 101MB peak: 103MB)
+
+syn_allowed_resources : blockrams=16  set on top level netlist arduinointerface
+
+
+Clock Summary
+**************
+
+Start                    Requested     Requested     Clock        Clock                
+Clock                    Frequency     Period        Type         Group                
+---------------------------------------------------------------------------------------
+arduinointerface|clk     401.0 MHz     2.494         inferred     Autoconstr_clkgroup_0
+=======================================================================================
+
+@W: MT529 :"c:\users\kim\documents\development\hdls\hdlc_chip\arduinointerface.vhd":60:27:60:29|Found inferred clock arduinointerface|clk which controls 19 sequential elements including q[7:0]. This clock has no specified timing constraint which may prevent conversion of gated or generated clocks and may adversely impact design performance. 
+
+Finished Pre Mapping Phase.
+@N: BN225 |Writing default property annotation file C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\iCEcube\iCEstickNibbleIO\iCEstickNibbleIO_Implmnt\iCEstickNibbleIO.sap.
+Pre-mapping successful!
+
+At Mapper Exit (Real Time elapsed 0h:00m:02s; CPU Time elapsed 0h:00m:00s; Memory used current: 68MB peak: 132MB)
+
+Process took 0h:00m:02s realtime, 0h:00m:01s cputime
+# Mon May 19 22:11:38 2014
+
+###########################################################]

@@ -1,0 +1,6 @@
+@N|Running in 64-bit mode
+@N: CD720 :"C:\lscc\iCEcube2.2013.12\synpbase\lib\vhd\std.vhd":123:18:123:21|Setting time resolution to ns
+@N:"C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\arduinointerface.vhd":51:7:51:22|Top entity is set to arduinointerface.
+@N: CD231 :"C:\lscc\iCEcube2.2013.12\synpbase\lib\vhd\std_logic_textio.vhd":79:15:79:16|Using onehot encoding for type mvl9plus ('U'="1000000000")
+@N: CD630 :"C:\Users\Kim\Documents\Development\HDLs\HDLC_chip\arduinointerface.vhd":51:7:51:22|Synthesizing work.arduinointerface.behavioural 
+

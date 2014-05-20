@@ -1,0 +1,24 @@
+---------------------------------------
+Resource Usage Report for arduinointerface 
+
+Mapping to part: ice40hx1ktq144
+Cell usage:
+SB_DFFER        12 uses
+SB_DFFR         10 uses
+SB_DFFS         4 uses
+SB_LUT4         21 uses
+
+I/O ports: 26
+I/O primitives: 26
+SB_GB_IO       2 uses
+SB_IO          24 uses
+
+I/O Register bits:                  0
+Register bits not including I/Os:   26 (2%)
+
+Mapping Summary:
+Total  LUTs: 21 (1%)
+
+Distribution of All Consumed LUTs = LUT4 
+Distribution of All Consumed Luts 21 = 21 
+

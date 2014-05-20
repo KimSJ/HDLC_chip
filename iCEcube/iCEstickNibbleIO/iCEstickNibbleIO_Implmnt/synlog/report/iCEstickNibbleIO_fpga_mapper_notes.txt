@@ -1,0 +1,15 @@
+@N: MF248 |Running in 64-bit mode.
+@N: MF666 |Clock conversion enabled 
+@N: MT206 |Auto Constrain mode is enabled
+@N: FX271 :"c:\users\kim\documents\development\hdls\hdlc_chip\arduinointerface.vhd":60:27:60:29|Instance "strbin[1]" with 10 loads replicated 1 times to improve timing 
+@N: FX271 :|Instance "RnWin_i[2]" with 4 loads replicated 3 times to improve timing 
+@N: FX271 :"c:\users\kim\documents\development\hdls\hdlc_chip\arduinointerface.vhd":60:27:60:29|Instance "RnWin[1]" with 8 loads replicated 1 times to improve timing 
+@N: FX271 :"c:\users\kim\documents\development\hdls\hdlc_chip\arduinointerface.vhd":60:27:60:29|Instance "strbin[0]" with 8 loads replicated 1 times to improve timing 
+@N: FX1016 :"c:\users\kim\documents\development\hdls\hdlc_chip\arduinointerface.vhd":57:2:57:4|SB_GB_IO inserted on the port clk.
+@N: FX1016 :"c:\users\kim\documents\development\hdls\hdlc_chip\arduinointerface.vhd":58:2:58:4|SB_GB_IO inserted on the port rst.
+@N: BW103 |Synopsys Constraint File time units using default value of 1ns 
+@N: BW107 |Synopsys Constraint File capacitance units using default value of 1pF 
+@N: MT320 |Timing report estimates place and route data. Please look at the place and route timing report for final timing.
+@N: MT322 |Clock constraints cover only FF-to-FF paths associated with the clock.
+@N: MT320 |Timing report estimates place and route data. Please look at the place and route timing report for final timing.
+@N: MT322 |Clock constraints cover only FF-to-FF paths associated with the clock.

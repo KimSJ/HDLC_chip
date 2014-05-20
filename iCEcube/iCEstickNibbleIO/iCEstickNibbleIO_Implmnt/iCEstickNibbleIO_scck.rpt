@@ -1,0 +1,28 @@
+# Synospys Constraint Checker(syntax only), version maplat, Build 006R, built Dec 13 2013
+# Copyright (C) 1994-2013, Synopsys, Inc. This software and the associated documentation are proprietary to Synopsys, Inc. This software may only be used in accordance with the terms and conditions of a written license agreement with Synopsys, Inc.  All other use or distribution of the software is strictly prohibited.
+
+# Written on Mon May 19 22:11:36 2014
+
+
+##### DESIGN INFO #######################################################
+
+Top View:                "arduinointerface"
+Constraint File(s):      (none)
+
+#Run constraint checker to find more issues with constraints.
+#########################################################################
+
+
+
+No issues found in constraint syntax.
+
+
+
+Clock Summary
+**************
+
+Start                    Requested     Requested     Clock        Clock                
+Clock                    Frequency     Period        Type         Group                
+---------------------------------------------------------------------------------------
+arduinointerface|clk     401.0 MHz     2.494         inferred     Autoconstr_clkgroup_0
+=======================================================================================
