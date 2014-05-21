@@ -1,0 +1,99 @@
+# iCEcube constraints file
+# Generic file for iCEstick
+#
+# Notes:
+#	OSCI is 12 MHz on pin 2 of USB chip
+
+#
+
+# J1 ("top")
+
+set_io PIO0_02		112			# J1 p3  
+set_io PIO0_03		113			# J1 p4  
+set_io PIO0_04		114			# J1 p5  
+set_io PIO0_05		115			# J1 p6  
+set_io PIO0_06		116			# J1 p7  
+set_io PIO0_07		117			# J1 p8  
+set_io PIO0_08		118			# J1 p9  
+set_io PIO0_09		119			# J1 p10 
+
+
+# J2 (Pmod socket)
+
+set_io PIO1_02		78			# connector p1
+set_io PIO1_03		79			# connector p2
+set_io PIO1_04		80			# connector p3
+set_io PIO1_05		81			# connector p4
+set_io PIO1_06		87			# connector p7 
+set_io PIO1_07		88			# connector p8 
+set_io PIO1_08		90			# connector p9 
+set_io PIO1_09		91			# connector p10
+
+
+# J3 ("bottom")
+
+set_io PIO2_17		62			# J3 p3  
+set_io PIO2_16		61			# J3 p4  
+set_io PIO2_15		60			# J3 p5  
+set_io PIO2_14		56			# J3 p6  
+set_io PIO2_13		48			# J3 p7  
+set_io PIO2_12		47			# J3 p8  
+set_io PIO2_11		45			# J3 p9  
+set_io PIO2_10		44			# J3 p10 
+
+
+# LED port
+
+# red LEDs numbered clockwise
+set_io LED1			99			# PIO1_14 Red
+set_io LED2			98			# PIO1_13 Red
+set_io LED3			97			# PIO1_12 Red
+set_io LED4			96			# PIO1_11 Red
+# green LED
+set_io LED5			95			# PIO1_10 Green
+
+
+# IrDA
+
+set_io RXD 			106			# PIO1_19 Receive data pin
+set_io TXD 			105			# PIO1_18 Transmit data pin
+set_io SD  			107			# PIO1_20 Shut down
+
+
+# RS232 (connection to USB chip)
+
+set_io RS232_Rx_TTL	 9
+set_io RS232_Tx_TTL	 8
+set_io RTSn			 7
+set_io DTRn			 3
+set_io CTSn			 4
+set_io DSRn			 2
+set_io DCDn			 1
+
+
+# SPI/Config
+
+set_io SPI_SCK		 70
+set_io SPI_SI		 68
+set_io SPI_SO		 67
+set_io SPI_SS_B		 71
+set_io CDONE	 	 65
+set_io CREST	 	 66 
+
+
+# pin 21 is driven from iCE_CLK -- 12MHz osc.
+
+set_io clk			 21
+
+
+
+
+
+
+
+
+
+
+
+
+
