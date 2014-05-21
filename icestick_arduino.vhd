@@ -1,5 +1,7 @@
 -- iCEcube top-level file
--- Generic file for iCEstick
+-- Example Arduino interface for iCEstick
+-- 
+-- eight outputs connected to LEDs and some of J3; eight inputs connected to J1
 --
 -- Notes:
 --	OSCI is 12 MHz on pin 2 of USB chip
@@ -81,22 +83,22 @@ architecture behavioural of iCEstick_arduino is
 
 	component arduinointerface is
 		port (
-		data:	inout Std_Logic_Vector (3 downto 0);
-		strb:	in Std_Logic;
-		RnW:	in Std_Logic;
-		clk:	in Std_Logic;
-		rst:	in Std_Logic;
-		-- io pins
-		rd, wr: out Std_Logic := '0';
-		q:		out Std_Logic_Vector (7 downto 0);
-		i:		in  Std_Logic_Vector (7 downto 0)
+			data:	inout Std_Logic_Vector (3 downto 0);
+			strb:	in Std_Logic;
+			RnW:	in Std_Logic;
+			clk:	in Std_Logic;
+			rst:	in Std_Logic;
+			-- io pins
+			rd, wr: out Std_Logic := '0';
+			q:		out Std_Logic_Vector (7 downto 0);
+			i:		in  Std_Logic_Vector (7 downto 0)
 		);
 	end component arduinointerface;
 begin
 
 	top : arduinointerface
 	port map (
-			-- arduino pins on the Pmod socket
+		-- arduino pins on the Pmod socket
 			data(0)	=>	PIO1_02,
 			data(1)	=>	PIO1_03,
 			data(2)	=>	PIO1_04,
@@ -105,7 +107,7 @@ begin
 			RnW 	=>	PIO1_07,
 			clk 	=>	PIO1_08,
 			rst 	=>	PIO1_09,
-			-- io pins
+		-- io pins
 			rd 		=>	PIO2_11, -- J3 p9
 			wr 		=>	PIO2_10,  -- J3 p10
 

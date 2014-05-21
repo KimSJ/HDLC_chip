@@ -167,7 +167,7 @@ begin
 					rin.state <= sRxAbort;
 				elsif bitCount = "000" and flagRx = '1' then
 					rin.state <= sRxDone;
-				else
+--				else
 --					rin.state <= r.state;
 --					rin.rxErr <= r.rxErr;
 --					rin.rxUnderrun <= r.rxUnderrun;
