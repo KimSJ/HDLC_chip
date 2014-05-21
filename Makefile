@@ -32,9 +32,9 @@ clean:
 
 %_tb: %_tb.o %.o
 	ghdl -e $(GHDL_OPTS) $@
-	ghdl -r $(GHDL_OPTS) $@ --vcd=$@.vcd $(R_OPTS)
+	ghdl -r $(GHDL_OPTS) $@ --vcd=$@.vcd --wave=$@.ghw $(R_OPTS)
 	# To start a new gtkwave session:
-	#    gtkwave $@.vcd &
+	#    gtkwave $@.ghw &
 
 %: %.o
 	ghdl -e $(GHDL_OPTS) $@
